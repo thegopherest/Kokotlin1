@@ -3,16 +3,16 @@
 
 //TODO hello worlds
 
-//fun main(args: Array<String>) = println("Hello!")
+//fun Home1.Home1.Home1.main(args: Array<String>) = println("Hello!")
 
 // Fun function:)
 fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(args[0]) else print(args[1])
 
-//fun main(args: Array<String>) : Unit {
+//fun Home1.Home1.Home1.main(args: Array<String>) : Unit {
 //    println("Hello, World!")
 //}
 
-//fun main(args: Array<String>) {
+//fun Home1.Home1.Home1.main(args: Array<String>) {
 //    if( args.size > 0)
 //        println("Hello, ${args[0]}!")
 //    else
@@ -25,7 +25,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 // kotlinc hello.kt -include-runtime -d hello.jar
 // full paths needed instead of hello.kt and hello.jar when you using Win systems
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    println("Hello, World from command line!")
 //}
 
@@ -34,7 +34,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 // val - immutable
 // var - mutable
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    i = k.toInt()
 //    println(a == b)
 //}
@@ -47,12 +47,12 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 
 // toString
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    val name = if (args.size > 0) args[0] else "Иван Заиндервенелый"
 //    println("Привет, $name")
 //}
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    println(mayakovsky)
 //    println(mayakovskyLiteral)
 //}
@@ -71,7 +71,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 //                                                  а без головы можно.
 //"""
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    val basicArray = mutableListOf("Петька","Василий Иваныч","Анка")
 //    basicArray.add("Пулемет")
 //    println(basicArray)
@@ -80,7 +80,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 
 //TODO null and not-null
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    println(funWithNullable(3))
 //    println(funWithNullable(null))
 //}
@@ -100,7 +100,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 
 // if () {} else {}
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    val name = if (args.size > 0)
 //        when(args[0]){
 //            "усы" -> {
@@ -121,7 +121,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 
 //TODO for
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    if (args.size < 1) return
 //
 //    val basicArray = mutableListOf("Петька","Василий Иваныч","Анка")
@@ -131,7 +131,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 //    }
 //}
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    println("1")
 //    for(i in 1..100 step 3)
 //        println("[i = $i]")
@@ -153,7 +153,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 //TODO while
 //
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    if (args.size < 1) return
 //
 //    val repetitions = args[0].toInt()
@@ -168,7 +168,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 
 //import java.util.*
 //
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    val interestingMap = HashMap<String,String>()
 //
 //    interestingMap.put("Анка","Пулемет")
@@ -183,7 +183,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 //    //Pair
 //}
 
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    for(c in 'a'..'z')
 //        println(c)
 //}
@@ -192,7 +192,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 //TODO strings
 //TODO exceptions
 
-//fun main(args: Array<String>) {
+//fun Home1.Home1.Home1.main(args: Array<String>) {
 //    //val n: Int = args[0].toInt()
 //
 //    val number = try {
@@ -213,7 +213,7 @@ fun main(args: Array<String>) = if (args[0].toInt() > args[1].toInt()) print(arg
 //import  java.util.*
 //
 //private val random = Random()
-//fun main(args: Array<String>){
+//fun Home1.Home1.Home1.main(args: Array<String>){
 //    for(i in 1..100)
 //        println(random.nextInt(5))
 //}/**
