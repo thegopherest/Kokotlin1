@@ -1,14 +1,29 @@
 package Home2
 
-import Home2.Animal
+//import Home2.Animal
 
-interface TreePart
+interface TreePart: ForestPart
 {
     var animals : MutableList<Animal>
-    fun NewDay()
+
+    val myTree : Tree
+    val IsFood : Boolean
+    get() = false
+
+    val IsLiving : Boolean
+    get() = false
+
+    override fun NewDay()
     {
         animals.clear()
     }
+    fun MakeFood()
+    fun Eat() : Boolean
+    {
+        return false
+    }
+
+
 }
 
 interface Food: TreePart
@@ -17,6 +32,9 @@ interface Food: TreePart
     var canEat : Boolean
     val haveFood : Int
 
+    override val IsFood: Boolean
+        get() = true
+
     override fun NewDay()
     {
         MakeFood()
@@ -24,12 +42,12 @@ interface Food: TreePart
         canEat = food > 0
     }
 
-    fun MakeFood()
+    override fun MakeFood()
     {
         food += haveFood * (Math.random() * 2).toInt()
     }
 
-    fun Eat():Boolean
+    override fun Eat():Boolean
     {
         if (canEat)
         {
@@ -47,6 +65,9 @@ interface Food: TreePart
 
 interface Living: TreePart
 {
+    override val IsLiving: Boolean
+        get() = true
+
     var livingAnimals: MutableList<Animal>
     override fun NewDay()
     {
@@ -67,72 +88,96 @@ interface FoodLiving: Food, Living
     }
 }
 
-open class Roots() : TreePart
+open class Roots(override val myTree: Tree) : TreePart
 {
     override final var animals: MutableList<Animal>
     init {
         animals = mutableListOf()
     }
+    override fun MakeFood(){}
 }
 
-class RootsLiving(override var livingAnimals : MutableList<Animal>) : Roots(), Living {}
+class RootsLiving(override var livingAnimals : MutableList<Animal>, myTree: Tree) : Roots(myTree), Living {}
 
-open class RootsFood(override final val haveFood : Int = 1) : Roots(), Food
+open class RootsFood(override final val haveFood : Int = 1, myTree: Tree) : Roots(myTree), Food
 {
     override final var food : Int
     override final var canEat : Boolean
 
-    init {
+    override fun MakeFood()
+    {
+        super<Food>.MakeFood()
+    }
+
+    init
+    {
         food = haveFood
         canEat = haveFood > 0
     }
 
 }
-class RootsFoodLiving(haveFood: Int, override var livingAnimals : MutableList<Animal>) : RootsFood(haveFood), FoodLiving {}
+class RootsFoodLiving(haveFood: Int, override var livingAnimals : MutableList<Animal>, myTree: Tree) : RootsFood(haveFood, myTree), FoodLiving {}
 
 
 
-open class Trunk() : TreePart
+open class Trunk(override val myTree: Tree) : TreePart
 {
     override final var animals: MutableList<Animal>
-    init {
+    init
+    {
         animals = mutableListOf()
     }
+    override fun MakeFood(){}
 }
 
-class TrunkFood(override final val haveFood : Int = 1) : Trunk(), Food
+open class TrunkFood(override final val haveFood : Int = 1, myTree: Tree) : Trunk(myTree), Food
 {
     override final var food: Int
     override final var canEat: Boolean
 
     init
     {
-    food = haveFood
-    canEat = haveFood > 0
+        food = haveFood
+        canEat = haveFood > 0
+    }
+
+    override fun MakeFood() {
+        super<Food>.MakeFood()
     }
 }
 
-class TrunkLiving(override final var livingAnimals : MutableList<Animal>) : Trunk(), Living {}
+class TrunkLiving(override final var livingAnimals : MutableList<Animal>, myTree: Tree) : Trunk(myTree), Living {}
 
-open class Crown(): TreePart
+class TrunkFoodLiving(haveFood: Int, override var livingAnimals : MutableList<Animal>, myTree: Tree): TrunkFood(haveFood, myTree), FoodLiving {}
+open class Crown(override val myTree: Tree): TreePart
 {
     override final var animals: MutableList<Animal>
-    init {
+
+    init
+    {
         animals = mutableListOf()
     }
+
+    override fun MakeFood(){}
 }
 
-class CrownFood(override final val haveFood : Int = 0) : Crown(), Food
+class CrownFood(override final val haveFood : Int = 0, myTree: Tree) : Crown(myTree), Food
 {
     override final var food : Int
     override final var canEat : Boolean
 
-    init {
+    init
+    {
         food = haveFood
         canEat = haveFood > 0
     }
+
+    override fun MakeFood()
+    {
+        super<Food>.MakeFood()
+    }
 }
-abstract class Tree(val living: Double = 0.5, val haveWorms : Double = 0.5)
+abstract class Tree(val living: Double = 0.0, val haveWorms : Double = 0.0, val numWorms : Int = 2)
 {
     var trunk : Trunk
     var crown : Crown
@@ -146,8 +191,14 @@ abstract class Tree(val living: Double = 0.5, val haveWorms : Double = 0.5)
 
     open fun MakeTrunk(): Trunk
     {
-        if (Math.random() > living) return TrunkLiving(AnimalsForTrunc())
-        return Trunk()
+        if (Math.random() > living)
+        {
+            if (Math.random() > haveWorms) return  TrunkFoodLiving(numWorms, AnimalsForTrunc(), this)
+            return TrunkLiving(AnimalsForTrunc(), this)
+        }
+        if (Math.random() > haveWorms) return  TrunkFood(numWorms, this)
+        return Trunk(this)
+
     }
 
     fun AnimalsForTrunc() : MutableList<Animal>
@@ -157,13 +208,13 @@ abstract class Tree(val living: Double = 0.5, val haveWorms : Double = 0.5)
 
     open fun MakeCrown() : Crown
     {
-        return Crown()
+        return Crown(this)
     }
 
     open fun MakeRoots() : Roots
     {
-        if (Math.random() > living) return RootsLiving(AnimalsForRoots())
-        return Roots()
+        if (Math.random() > living) return RootsLiving(AnimalsForRoots(), this)
+        return Roots(this)
     }
 
     fun  AnimalsForRoots() : MutableList<Animal>
@@ -172,60 +223,60 @@ abstract class Tree(val living: Double = 0.5, val haveWorms : Double = 0.5)
     }
 }
 
-class Spruce(living: Double, val haveFood: Int) : Tree(living)
+class Spruce(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+{
+    override fun MakeCrown() : CrownFood
+    {
+        return CrownFood(haveFood, this)
+    }
+
+    override fun MakeRoots() : RootsFood
+    {
+        if (Math.random() > living) return RootsFoodLiving(haveFood, AnimalsForRoots(), this)
+        return RootsFood(haveFood, this)
+    }
+}
+
+class Pine(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
 {
     override fun MakeCrown() : Crown
     {
-        return CrownFood(haveFood)
-    }
-
-    override fun MakeRoots() : Roots
-    {
-        if (Math.random() > living) return RootsFoodLiving(haveFood, AnimalsForRoots())
-        return RootsFood(haveFood)
-    }
-}
-
-class Pine(living: Double, val haveFood: Int) : Tree(living)
-{
-    override fun MakeCrown() : Crown
-    {
-        return CrownFood(haveFood)
-    }
-    override fun MakeRoots() : Roots
-    {
-        if (Math.random() > living) return RootsFoodLiving(haveFood, AnimalsForRoots())
-        return RootsFood(haveFood)
-    }
-}
-
-class Oak(living: Double) : Tree(living)
-{
-
-}
-
-class Birch(living: Double) : Tree(living)
-{
-
-}
-
-class Maple(living: Double, val haveFood: Int) : Tree(living)
-{
-    override fun MakeCrown() : Crown
-    {
-        return CrownFood(haveFood)
-    }
-}
-
-class Walnut(living: Double, val haveFood: Int ) : Tree(living)
-{
-    override fun MakeCrown() : Crown
-    {
-        return CrownFood(haveFood)
+        return CrownFood(haveFood, this)
     }
     override fun MakeRoots() : Roots
     {
-        if (Math.random() > living) return RootsFoodLiving(haveFood, AnimalsForRoots())
-        return RootsFood(haveFood)
+        if (Math.random() > living) return RootsFoodLiving(haveFood, AnimalsForRoots(), this)
+        return RootsFood(haveFood, this)
+    }
+}
+
+class Oak(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+{
+
+}
+
+class Birch(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+{
+
+}
+
+class Maple(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+{
+    override fun MakeCrown() : Crown
+    {
+        return CrownFood(haveFood, this)
+    }
+}
+
+class Walnut(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+{
+    override fun MakeCrown() : Crown
+    {
+        return CrownFood(haveFood, this)
+    }
+    override fun MakeRoots() : Roots
+    {
+        if (Math.random() > living) return RootsFoodLiving(haveFood, AnimalsForRoots(), this)
+        return RootsFood(haveFood, this)
     }
 }
