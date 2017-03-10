@@ -1,5 +1,6 @@
 package Home2
 
+
 //import Home2.Animal
 
 interface TreePart: ForestPart
@@ -22,8 +23,6 @@ interface TreePart: ForestPart
     {
         return false
     }
-
-
 }
 
 interface Food: TreePart
@@ -113,6 +112,7 @@ open class RootsFood(override final val haveFood : Int = 1, myTree: Tree) : Root
     {
         food = haveFood
         canEat = haveFood > 0
+
     }
 
 }
@@ -161,7 +161,7 @@ open class Crown(override val myTree: Tree): TreePart
     override fun MakeFood(){}
 }
 
-class CrownFood(override final val haveFood : Int = 0, myTree: Tree) : Crown(myTree), Food
+class CrownFood(override final val haveFood : Int, myTree: Tree) : Crown(myTree), Food
 {
     override final var food : Int
     override final var canEat : Boolean
@@ -177,7 +177,7 @@ class CrownFood(override final val haveFood : Int = 0, myTree: Tree) : Crown(myT
         super<Food>.MakeFood()
     }
 }
-abstract class Tree(val living: Double = 0.0, val haveWorms : Double = 0.0, val numWorms : Int = 2)
+abstract class Tree(val living: Double, val haveWorms : Double, val numWorms : Int): ForestPart
 {
     var trunk : Trunk
     var crown : Crown
@@ -221,9 +221,20 @@ abstract class Tree(val living: Double = 0.0, val haveWorms : Double = 0.0, val 
     {
         return mutableListOf()
     }
+
+    override fun NewDay()
+    {
+        trunk.NewDay()
+        roots.NewDay()
+        crown.NewDay()
+    }
+
+    override fun toString(): String {
+        return crown.animals.size.toString() + trunk.animals.size + roots.animals.size + this.javaClass.toString() + this.hashCode()
+    }
 }
 
-class Spruce(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+class Spruce(living: Double = 0.5, haveWorms: Double = 0.5, numWorms: Int = 2, val haveFood: Int = 2) : Tree(living, haveWorms, numWorms)
 {
     override fun MakeCrown() : CrownFood
     {
@@ -237,7 +248,7 @@ class Spruce(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int
     }
 }
 
-class Pine(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+class Pine(living: Double = 0.5, haveWorms: Double = 0.5, numWorms: Int = 2, val haveFood: Int = 2) : Tree(living, haveWorms, numWorms)
 {
     override fun MakeCrown() : Crown
     {
@@ -250,17 +261,17 @@ class Pine(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) 
     }
 }
 
-class Oak(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+class Oak(living: Double = 0.5, haveWorms: Double = 0.5, numWorms: Int = 2, val haveFood: Int = 2) : Tree(living, haveWorms, numWorms)
 {
 
 }
 
-class Birch(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+class Birch(living: Double = 0.5, haveWorms: Double = 0.5, numWorms: Int = 2, val haveFood: Int = 2) : Tree(living, haveWorms, numWorms)
 {
 
 }
 
-class Maple(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+class Maple(living: Double = 0.5, haveWorms: Double = 0.5, numWorms: Int = 2, val haveFood: Int = 2) : Tree(living, haveWorms, numWorms)
 {
     override fun MakeCrown() : Crown
     {
@@ -268,7 +279,7 @@ class Maple(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int)
     }
 }
 
-class Walnut(living: Double, haveWorms: Double, numWorms: Int, val haveFood: Int) : Tree(living, haveWorms, numWorms)
+class Walnut(living: Double = 0.5, haveWorms: Double = 0.5, numWorms: Int = 2, val haveFood: Int = 2) : Tree(living, haveWorms, numWorms)
 {
     override fun MakeCrown() : Crown
     {

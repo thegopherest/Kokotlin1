@@ -5,6 +5,7 @@ abstract class Animal(var home : Living) : ForestPart
     var place : TreePart = home
     var hp : Int = 10
     val male : Boolean = Math.random() > 0.5
+    var die : Boolean = false
 
     abstract fun Gen(newAnimalProb: Double, secondAnimal: Animal)
     abstract fun Eat()
@@ -12,6 +13,7 @@ abstract class Animal(var home : Living) : ForestPart
     fun Die()
     {
         home.animals.remove(this)
+        die = true
     }
 
     override fun NewDay() {
@@ -21,9 +23,13 @@ abstract class Animal(var home : Living) : ForestPart
             Die()
         }
     }
+    override fun toString(): String
+    {
+        return hp.toString() + (if(male) "male" else "female") + this.javaClass.toString() + this.hashCode()
+    }
 }
 
-class Squirrel(var newHome: TrunkLiving): Animal(newHome)
+class Squirrel(var newHome: Living): Animal(newHome)
 {
     override fun Gen(newAnimalProb: Double, secondAnimal: Animal) {
         if (secondAnimal is Squirrel && male != secondAnimal.male && Math.random() > newAnimalProb)
@@ -40,7 +46,7 @@ class Squirrel(var newHome: TrunkLiving): Animal(newHome)
     }
 }
 
-class FlyingSquirrel(var newHome: TrunkLiving): Animal(newHome)
+class FlyingSquirrel(var newHome: Living): Animal(newHome)
 {
     override fun Gen(newAnimalProb: Double, secondAnimal: Animal) {
         if (secondAnimal is FlyingSquirrel && male != secondAnimal.male && Math.random() > newAnimalProb)
@@ -58,7 +64,7 @@ class FlyingSquirrel(var newHome: TrunkLiving): Animal(newHome)
 
 }
 
-class Woodpecker(var newHome: TrunkLiving): Animal(newHome)
+class Woodpecker(var newHome: Living): Animal(newHome)
 {
     override fun Gen(newAnimalProb: Double, secondAnimal: Animal) {
         if (secondAnimal is Woodpecker && male != secondAnimal.male && Math.random() > newAnimalProb)
@@ -74,7 +80,7 @@ class Woodpecker(var newHome: TrunkLiving): Animal(newHome)
     }
 }
 
-class Chimunks(var newHome: RootsLiving): Animal(newHome)
+class Chimunks(var newHome: Living): Animal(newHome)
 {
     override fun Gen(newAnimalProb: Double, secondAnimal: Animal) {
         if (secondAnimal is Chimunks && male != secondAnimal.male && Math.random() > newAnimalProb)
@@ -91,7 +97,7 @@ class Chimunks(var newHome: RootsLiving): Animal(newHome)
 }
 
 //Я слишком поздно понял, что нужны классы еды. Поэтому барсуки тоже жрут шишки.
-class Badgers(var newHome: RootsLiving): Animal(newHome)
+class Badgers(var newHome: Living): Animal(newHome)
 {
     override fun Gen(newAnimalProb: Double, secondAnimal: Animal) {
         if (secondAnimal is Badgers && male != secondAnimal.male && Math.random() > newAnimalProb)
